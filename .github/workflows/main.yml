@@ -15,7 +15,7 @@ jobs:
       - name: Set up Super-Linter
         uses: github/super-linter@v4
         with:
-          github-token: ${{ secrets.SECRET_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           annotations: error,warning,refactor,convention
 
       - name: Run Super-Linter
