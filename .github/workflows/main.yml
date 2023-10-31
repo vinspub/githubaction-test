@@ -1,4 +1,4 @@
-name: ci
+name: Super Linter
 
 on:
   push:
@@ -6,42 +6,18 @@ on:
       - main
 
 jobs:
-  maven_build:
+  super-linter:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Java
-        uses: actions/setup-java@v2
+      - name: Set up Super-Linter
+        uses: github/super-linter@v4
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          github-token: ${{ secrets.SECRET_TOKEN }}
+          annotations: error,warning,refactor,convention
 
-  dependabot:
-    needs: maven_build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Dependabot
-        uses: dependabot/dependabot-action@v2
-        with:
-          github_token: ${{ secrets.SECRET_TOKEN }}
-
-      - name: Dependabot Alert CSV Export
-        uses: ShamKarthikS-Hexaware/dependabot-alert-export@v1.0
-        with:        
-          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
-          org_name: 'DevSecOps-20'
-          repo_name: 'nodejs.org'
-          csv_path: data/vulnerability.csv
-
-      - name: Upload Vulnerability report
-        uses: actions/upload-artifact@v3
-        with:
-           name: vulnerability_report
-           path: data/vulnerability.csv
+      - name: Run Super-Linter
+        run: |
+          ./run-linter.sh
