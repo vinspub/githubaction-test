@@ -13,8 +13,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Super-Linter
-        uses: github/super-linter@v4
+        uses: super-linter/super-linter@v5
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           annotations: error,warning,refactor,convention
 
       - name: Run Super-Linter
