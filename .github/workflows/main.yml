@@ -11,20 +11,6 @@ env:
   FORCE_COLOR: 2
 
 jobs:
-  build-and-scan:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check Out Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
-
-      - name: Build with Maven
-        run: mvn clean install
 
       - name: Download CycloneDX CLI
         run: |
