@@ -22,13 +22,13 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: naveen2131/my-app:gitleaks
-          format: 'cosign-vuln'
-          output: 'trivy-results.cosign-vuln'
+          format: 'xml'
+          output: 'trivy-results.xml'
 
       - name: Upload Trivy Report
         uses: actions/upload-artifact@v2
         with:
           name: trivy-report
-          path: 'trivy-results.cosign-vuln'
+          path: 'trivy-results.xml'
 
      
