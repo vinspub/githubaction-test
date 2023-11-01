@@ -1,23 +1,49 @@
-name: Super Linter
+name: CI
 
 on:
   push:
     branches:
       - main
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FORCE_COLOR: 2
 
 jobs:
-  super-linter:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Clone repository
         uses: actions/checkout@v2
 
-      - name: Set up Super-Linter
-        uses: super-linter/super-linter@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          annotations: error,warning,refactor,convention
+          node-version: "lts/*"
+          cache: npm
 
-      - name: Run Super-Linter
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Lint
         run: |
-          ./run-linter.sh
+          echo "::add-matcher::.github/workflows/remark-lint-problem-matcher.json"
+          npm run test:lint
+  test:
+    name: Node on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      
+      - name: Trivy Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: naveen2131/my-app:gitleak
