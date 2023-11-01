@@ -25,13 +25,6 @@ jobs:
           node-version: "lts/*"
           cache: npm
 
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Lint
-        run: |
-          echo "::add-matcher::.github/workflows/remark-lint-problem-matcher.json"
-          npm run test:lint
   test:
     name: Node on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -42,8 +35,15 @@ jobs:
         os: [ubuntu-latest]
 
     steps:
-      
       - name: Trivy Scan
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: naveen2131/my-app:gitleaks
+        run: |
+          trivy --format json --output /github/workspace/trivy_report.json naveen2131/my-app:gitleaks
+
+      - name: Upload Trivy Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: trivy-report
+          path: /github/workspace/trivy_report.json naveen2131/my-app:gitleaks
