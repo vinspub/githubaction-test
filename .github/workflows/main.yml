@@ -11,24 +11,12 @@ env:
   FORCE_COLOR: 2
 
 jobs:
-  trivy-scan:
+  build-and-scan:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check Out Repository
         uses: actions/checkout@v2
 
-      - name: Trivy Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: naveen2131/my-app:gitleaks
-          format: 'spdx-json'
-          output: 'trivy-results.spdx-json'
-
-      - name: Upload Trivy Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: trivy-report
-          path: 'trivy-results.spdx-json'
-
-     
+      - name: Build with Maven
+        run: mvn clean install
