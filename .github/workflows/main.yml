@@ -24,7 +24,7 @@ jobs:
       - name: Generate CycloneDX SBOM
         run: |
           
-          curl -fsSL -o cyclonedx-cli.jar https://github.com/CycloneDX/cyclonedx-cli/releases/latest/download/cyclonedx-cli.jar
+          curl -fsSL -o cyclonedx-cli.jar https://github.com/CycloneDX/cyclonedx-cli/releases/latest/download/v4.0.0/cyclonedx-cli-4.0.0.jar
 
          
           java -jar cyclonedx-cli.jar bom \
