@@ -7,9 +7,6 @@ on:
   pull_request:
   workflow_dispatch:
 
-env:
-  FORCE_COLOR: 2
-
 jobs:
   build-scan-and-report:
     runs-on: ubuntu-latest
@@ -18,15 +15,21 @@ jobs:
       - name: Check Out Repository
         uses: actions/checkout@v2
 
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11' # Adjust the Java version as needed
+
       - name: Build with Maven
         run: mvn clean install
 
+      - name: Download CycloneDX CLI
+        run: |
+          LATEST_RELEASE=$(curl -s https://api.github.com/repos/CycloneDX/cyclonedx-cli/releases/latest | grep "browser_download_url" | cut -d '"' -f 4)
+          curl -fsSL -o cyclonedx-cli.jar $LATEST_RELEASE
+
       - name: Generate CycloneDX SBOM
         run: |
-          
-          curl -fsSL -o cyclonedx-cli.jar https://github.com/CycloneDX/cyclonedx-cli/releases/latest/download/v4.0.0/cyclonedx-cli-4.0.0.jar
-
-         
           java -jar cyclonedx-cli.jar bom \
             --input target/your-artifact.jar \
             --output target/cyclonedx.bom.xml
@@ -46,7 +49,7 @@ jobs:
       - name: Scan CycloneDX SBOM with Dependency-Track
         run: |
           # Set your Dependency-Track URL
-          DT_URL="https://uat-sca.m2pfintech.com/"
+          DT_URL="https://your-dependency-track-url"
 
           ./dt-cli/dt-cli scan \
             --project-name "Devsecops" \
