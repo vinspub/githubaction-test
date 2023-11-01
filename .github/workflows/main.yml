@@ -22,13 +22,13 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: naveen2131/my-app:gitleaks
-          format: 'html'
-          output: 'trivy-results.html'
+          format: 'github'
+          output: 'trivy-results.github'
 
       - name: Upload Trivy Report
         uses: actions/upload-artifact@v2
         with:
           name: trivy-report
-          path: 'trivy-results.html'
+          path: 'trivy-results.github'
 
      
