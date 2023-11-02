@@ -25,11 +25,11 @@ jobs:
         with:
           output: "report-bom.xml"
       
-      uses: DependencyTrack/gh-upload-sbom@v2.0.0
-      with:
-        serverHostname: 'https://uat-sca.m2pfintech.com/'
-        apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-        projectName: 'Devsecops'
-        projectVersion: 'master'
-        bomFilename: "report-bom.xml"
-        autoCreate: true
+      - uses: DependencyTrack/gh-upload-sbom@v2.0.0
+        with:
+          serverHostname: 'https://uat-sca.m2pfintech.com/'
+          apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+          projectName: 'Devsecops'
+          projectVersion: 'master'
+          bomFilename: "report-bom.xml"
+          autoCreate: true
