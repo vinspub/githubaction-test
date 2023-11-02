@@ -21,6 +21,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Generate CycloneDX SBOM
-        run: |
-              java -jar ./cyclonedx-cli.jar bom --input target/your-artifact.jar --output target/cyclonedx.bom.xml
+      - uses: AppThreat/cdxgen-action@v1
+        with:
+          output: "report-bom.xml"
