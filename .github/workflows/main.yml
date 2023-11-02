@@ -32,6 +32,6 @@ jobs:
             --project-name "Devsecops" \
             --project-version "1.0" \
             --auto-create true \
-            --file target/report-bom.xml \
+            --file report-bom.xml \
             --dependency-check true \
             --url "$DT_URL"
