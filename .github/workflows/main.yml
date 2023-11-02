@@ -23,7 +23,4 @@ jobs:
 
       - name: Generate CycloneDX SBOM
         run: |
-          java -jar cyclonedx-cli.jar bom \
-            --input target/your-artifact.jar \
-            --output target/cyclonedx.bom.xml
-  
+              java -jar ./cyclonedx-cli.jar bom --input target/your-artifact.jar --output target/cyclonedx.bom.xml
