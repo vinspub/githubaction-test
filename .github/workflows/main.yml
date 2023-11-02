@@ -25,6 +25,10 @@ jobs:
         with:
           output: "report-bom.xml"
       
+      - name: list
+        run: |
+          ls
+      
       - uses: DependencyTrack/gh-upload-sbom@v2.0.0
         with:
           serverHostname: 'https://uat-sca.m2pfintech.com/'
