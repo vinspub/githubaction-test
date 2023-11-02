@@ -25,13 +25,11 @@ jobs:
         with:
           output: "report-bom.xml"
       
-      - name: Scan CycloneDX SBOM with Dependency-Track
-        run: |
-          DT_URL="https://your-dependency-track-url"
-          ./dt-cli/dt-cli scan \
-            --project-name "Devsecops" \
-            --project-version "1.0" \
-            --auto-create true \
-            --file report-bom.xml \
-            --dependency-check true \
-            --url "$DT_URL"
+      uses: DependencyTrack/gh-upload-sbom@v2.0.0
+      with:
+        serverHostname: 'https://uat-sca.m2pfintech.com/'
+        apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
+        projectName: 'Devsecops'
+        projectVersion: 'master'
+        bomFilename: "report-bom.xml"
+        autoCreate: true
