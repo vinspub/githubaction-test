@@ -18,15 +18,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x  # Use the appropriate Python version
-
+          python-version: 3.x  
       - name: Install CycloneDX
         run: |
           pip install cyclonedx-bom==1.4
         shell: bash
 
       - name: Export Docker Image Filesystem
-        run: docker export --help
+        run: docker export -o image-sbom.xml
 
         shell: bash
 
