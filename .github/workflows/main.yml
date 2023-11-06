@@ -11,29 +11,22 @@ env:
   FORCE_COLOR: 2
 
 jobs:
-  build-and-scan:
+  trivy-scan:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check Out Repository
         uses: actions/checkout@v2
 
-      - name: Build with Maven
-        run: mvn clean install
+      - name: Trivy Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: naveen2131/my-app:gitleaks
+          format: 'table'
+          output: 'trivy-results.table'
 
-      - uses: AppThreat/cdxgen-action@v1
+      - name: Upload Trivy Report
+        uses: actions/upload-artifact@v2
         with:
-          output: "report-bom.xml"
-      
-      - name: list
-        run: |
-          ls
-      
-      - uses: DependencyTrack/gh-upload-sbom@v2.0.0
-        with:
-          serverHostname: 'https://uat-sca.m2pfintech.com/'
-          apiKey: ${{ secrets.DEPENDENCYTRACK_APIKEY }}
-          projectName: 'Devsecops'
-          projectVersion: 'master'
-          bomFilename: "report-bom.xml"
-          autoCreate: true
+          name: trivy-report
+          path: 'trivy-results.table'
