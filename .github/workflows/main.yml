@@ -26,6 +26,14 @@ jobs:
           output: 'sbom-trivy'
 
       - name: Upload Trivy Report
+        run: |
+          ls -l
+          cp sbom-trivy /github/workspace
+        working-directory: /tmp
+      - name: Upload SBOM Artifact
         uses: actions/upload-artifact@v2
         with:
           name: 'sbom-trivy'
+          if-no-files-found: warn
+        env:
+          FORCE_COLOR: 2
