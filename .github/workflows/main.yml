@@ -13,9 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Docker Image
-        run: python:latest
-
       - name: Scan Container Image
         run: |
           trivy image --format cyclonedx -o sbom.xml python:latest
