@@ -1,4 +1,4 @@
-name: Generate CycloneDX SBOM for Docker Image
+name: Docker SBOM Generation
 
 on:
   push:
@@ -15,22 +15,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.x  
-      - name: Install CycloneDX
+      - name: Set up Trivy
         run: |
-          pip install cyclonedx-bom==1.4
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.19.2/trivy_0.19.2_Linux-64bit.deb
+          sudo dpkg -i trivy_0.19.2_Linux-64bit.deb
         shell: bash
 
-      - name: Export Docker Image Filesystem
-        run: docker export -o image-sbom.xml
-
+      - name: Scan Docker Image and Generate SBOM
+        run: |
+          trivy image --format cyclonedx -o sbom.json node:latest
         shell: bash
 
       - name: Upload SBOM Artifact
         uses: actions/upload-artifact@v2
         with:
           name: sbom-artifact
-          path: image-sbom.xml
+          path: sbom.json
