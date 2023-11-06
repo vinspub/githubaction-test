@@ -25,12 +25,8 @@ jobs:
           pip install cyclonedx-bom==1.4
         shell: bash
 
-      - name: Generate SBOM for Docker Image
-        run: |
-         
-          mkdir docker_extracted_files
-          docker export -o node:16.3-alpine3.12
-          cyclonedx-bom --output image-sbom.xml docker_extracted_files
+      - name: Export Docker Image Filesystem
+        run: docker export -o image-sbom.xml 
 
         shell: bash
 
