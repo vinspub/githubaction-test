@@ -27,6 +27,7 @@ jobs:
 
       - name: Export Docker Image Filesystem
         run: docker export -o image-sbom.xml 
+        run: docker export --help
 
         shell: bash
 
