@@ -23,9 +23,9 @@ jobs:
         with:
           image-ref: python:latest
           format: 'cyclonedx'
-          output: 'trivy-results.dx'
+          output: 'sbom-trivy'
 
       - name: Upload Trivy Report
         uses: actions/upload-artifact@v2
         with:
-          name: trivy-report-dx
+          name: 'sbom-trivy'
