@@ -13,14 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Docker Image
-        run: python:latest
-
-       - name: Install Trivy
+      - name: Install Trivy
         run: |
           wget https://github.com/aquasecurity/trivy/releases/download/v0.19.2/trivy_0.19.2_Linux-64bit.deb
           sudo dpkg -i trivy_0.19.2_Linux-64bit.deb
-        shell: bash  
+        shell: bash
 
       - name: Scan Container Image
         run: |
@@ -31,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: sbom-artifact
-          path: image-sbom.xml
+          path: sbom.xml
