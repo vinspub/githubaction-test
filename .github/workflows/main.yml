@@ -21,19 +21,12 @@ jobs:
       - name: Trivy Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: python:latest
-          format: 'cyclonedx'
-          output: 'sbom-trivy'
+          image-ref: node:16.3-alpine3.12
+          format: 'table'
+          output: 'trivy-results.table'
 
       - name: Upload Trivy Report
-        run: |
-          ls -l
-          cp sbom-trivy /github/workspace
-        working-directory: /tmp
-      - name: Upload SBOM Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: 'sbom-trivy'
-          if-no-files-found: warn
-        env:
-          FORCE_COLOR: 2
+          name: trivy-report
+          path: 'trivy-results.table'
