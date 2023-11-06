@@ -1,4 +1,4 @@
-name: CI
+name: Generate CycloneDX SBOM
 
 on:
   push:
@@ -7,26 +7,31 @@ on:
   pull_request:
   workflow_dispatch:
 
-env:
-  FORCE_COLOR: 2
-
 jobs:
-  trivy-scan:
+  generate-sbom:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check Out Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Trivy Scan
-        uses: aquasecurity/trivy-action@master
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          image-ref: node:16.3-alpine3.12
-          format: 'table'
-          output: 'trivy-results.table'
+          python-version: 3.x  # Use the appropriate Python version
 
-      - name: Upload Trivy Report
+      - name: Install CycloneDX
+        run: |
+          pip install cyclonedx-bom==1.4
+        shell: bash
+
+      - name: Generate SBOM
+        run: |
+          cyclonedx-bom --help 
+        shell: bash
+
+      - name: Upload SBOM Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: trivy-report
-          path: 'trivy-results.table'
+          name: sbom-artifact
+          path: sbom.xml  
