@@ -1,32 +1,28 @@
-name: CI
+name: Generate SBOM for Container Image
 
 on:
   push:
     branches:
       - main
-  pull_request:
-  workflow_dispatch:
-
-env:
-  FORCE_COLOR: 2
 
 jobs:
-  trivy-scan:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check Out Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Trivy Scan
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: python:latest
-          format: 'table'
-          output: 'trivy-results.table'
+      - name: Docker Image
+        run: python:latest
 
-      - name: Upload Trivy Report
+      - name: Scan Container Image
+        run: |
+          trivy image --format cyclonedx -o sbom.xml python:latest
+        shell: bash
+
+      - name: Upload SBOM Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: trivy-report
-          path: 'trivy-results.table'
+          name: sbom-artifact
+          path: image-sbom.xml
