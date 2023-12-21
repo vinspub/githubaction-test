@@ -9,8 +9,6 @@ jobs:
   Terrascan:
     name: Terrascan Scan
     runs-on: ubuntu-latest
-    container:
-      image: naveen2131/my-app:baseimage
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
